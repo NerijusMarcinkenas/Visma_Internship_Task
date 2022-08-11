@@ -1,4 +1,5 @@
 ﻿using MeetingApp.BL;
+using MeetingApp.BL.Interfaces;
 using MeetingApp.DAL.Entities;
 using MeetingApp.DAL.Enums;
 
@@ -6,7 +7,7 @@ namespace InternalMeetingApp
 {
     public class MeetingsUI
     {
-        private Service Service { get; set; }
+        private IService Service { get; set; }
         private Person LogedInnPerson { get; set; }      
         public MeetingsUI()
         {

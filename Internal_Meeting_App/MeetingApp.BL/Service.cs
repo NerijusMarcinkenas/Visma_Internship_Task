@@ -124,7 +124,7 @@ namespace MeetingApp.BL
         {
             return MeetingRepository.GetMeetings(attendees);
         }
-        public static bool PersonExists(Person person, Meeting meeting) => meeting.People.Any(i => i.Id == person.Id);
+        public bool PersonExists(Person person, Meeting meeting) => meeting.People.Any(i => i.Id == person.Id);
 
 
     }

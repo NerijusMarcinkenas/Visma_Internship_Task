@@ -20,5 +20,6 @@ namespace MeetingApp.BL.Interfaces
         Person GetPerson(string username);
         Person LogIn(string username, string password);
         bool RemovePersonFromMeeting(Person person, Meeting meeting);
+        public bool PersonExists(Person person, Meeting meeting);
     }
 }
