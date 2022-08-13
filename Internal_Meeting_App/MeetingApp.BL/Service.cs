@@ -89,7 +89,7 @@ namespace MeetingApp.BL
         public Person GetPerson(string username)
         {
             return MeetingRepository.GetPeople().SingleOrDefault(p => p.Username == username);
-        }
+        }     
         public List<Meeting> GetMeetings() => MeetingRepository.GetMeetings();
         public List<Meeting> GetMeetings(string description)
         {

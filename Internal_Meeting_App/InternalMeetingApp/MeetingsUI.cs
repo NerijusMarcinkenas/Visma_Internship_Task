@@ -240,7 +240,7 @@ namespace InternalMeetingApp
                 Console.WriteLine("No people is added to a meeting");
                 return;
             }
-            var person = GetPerson();
+            var person = GetPerson(meeting);
             try
             {
                 Service.RemovePersonFromMeeting(person, meeting);             
@@ -314,6 +314,20 @@ namespace InternalMeetingApp
                 return null;
             }
            return meetings[--meetingSelection];
+        }
+        private Person GetPerson(Meeting meeting)
+        {
+
+            Console.WriteLine("Select person: ");
+            Static.ShowItems(meeting.People);
+            var personSelection = Static.GetInt();
+
+            if (!Validator.InRange(meeting.People, personSelection))
+            {
+                Console.WriteLine("Wrong selection");
+                return null;
+            }
+            return meeting.People[--personSelection];
         }
         private Person GetPerson()
         {
