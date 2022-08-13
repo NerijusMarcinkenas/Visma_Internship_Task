@@ -28,8 +28,8 @@ namespace MeetingApp.DAL.Repositories
             DateTime endDate)
         {
             if (name == string.Empty || responsiblePerson is null || description == String.Empty) return false;
-     
-            var meeting = new Meeting(name, responsiblePerson, description, category, type, startDate, endDate);
+            responsiblePerson.TimeAddedToMeeting = DateTime.Now;
+            var meeting = new Meeting(name, responsiblePerson, description, category, type, startDate, endDate);          
             Meetings.Add(meeting);
             WriteChanges();
             LoadMeetings();
@@ -38,8 +38,7 @@ namespace MeetingApp.DAL.Repositories
 
         public bool DeleteMeeting(Meeting meeting)
         {
-            LoadMeetings();
-            if (!Meetings.Any(i => i.Id == meeting.Id)) return false;
+            LoadMeetings();         
 
             var removed = Meetings.Remove(Meetings.Single(i => i.Id == meeting.Id));
             WriteChanges();

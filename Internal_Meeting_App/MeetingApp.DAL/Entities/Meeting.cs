@@ -32,7 +32,7 @@ namespace MeetingApp.DAL.Entities
             Type = type;
             StartDate = startDate;
             EndDate = endDate;
-
+            People.Add(responsiblePerson);
         }
 
         public override string ToString()

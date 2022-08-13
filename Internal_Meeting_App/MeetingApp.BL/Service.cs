@@ -45,7 +45,6 @@ namespace MeetingApp.BL
             if (startDate == DateTime.MinValue || endDate == DateTime.MinValue)
             {
                 throw new Exception(message: "Please enter dates");
-
             }
             MeetingRepository.CreateMeeting(name, person, description, category, type, startDate, endDate);
 
@@ -53,8 +52,12 @@ namespace MeetingApp.BL
         }
         public bool DeleteMeeting(Person person, Meeting meeting)
         {
-            if (meeting.ResponsiblePerson.Id == person.Id) return false;
-            return MeetingRepository.DeleteMeeting(meeting);
+            if (meeting.ResponsiblePerson.Id == person.Id)
+            {
+                return MeetingRepository.DeleteMeeting(meeting);
+            }
+            return false;
+           
         }
         public bool AddPersonToMeeting(Person person, Meeting meeting)
         {

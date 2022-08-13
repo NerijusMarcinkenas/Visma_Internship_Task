@@ -2,7 +2,7 @@
 {
     public static class Validator
     {
-        public static bool ValidateSelection<T>(List<T> items, int selection) => items.Count <= selection;
+        public static bool InRange<T>(List<T> items, int selection) => items.Count >= selection;
     }
 
 

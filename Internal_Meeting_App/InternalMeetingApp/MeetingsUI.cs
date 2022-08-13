@@ -8,7 +8,8 @@ namespace InternalMeetingApp
     public class MeetingsUI
     {
         private IService Service { get; set; }
-        private Person LogedInnPerson { get; set; }      
+        private Person LogedInnPerson { get; set; }
+        private readonly string _guest = "Guest";
         public MeetingsUI()
         {
             Service = new Service();
@@ -17,7 +18,7 @@ namespace InternalMeetingApp
 
         public void UserInterface()
         {          
-            Console.WriteLine($"Logged in as: {LogedInnPerson.Username??"Guest"}");
+            Console.WriteLine($"Logged in as: {LogedInnPerson.Username??_guest}");
             Console.WriteLine("Select:");
             Console.WriteLine("" +
                 "[1] - Log in\n" +
@@ -58,7 +59,6 @@ namespace InternalMeetingApp
                     Console.WriteLine("No such selection");
                     break;
             }
-
         }
         public void MeetingFilter()
         {
@@ -90,8 +90,7 @@ namespace InternalMeetingApp
             catch (Exception e )
             {
                 Console.WriteLine(e.Message);
-            }
-            
+            }            
         }
         public void CreateMeeting()
         {
@@ -128,7 +127,7 @@ namespace InternalMeetingApp
                 Console.WriteLine(e.Message);                
             }          
             if (created)
-            {
+            {                
                 Console.WriteLine("Meeting created successfully");
                 return;
             }
@@ -165,12 +164,11 @@ namespace InternalMeetingApp
             int x = 1;
 
             Console.Clear();
-            if (LogedInnPerson is null)
+            if (LogedInnPerson is null || LogedInnPerson.Username is null)
             {
                 Console.WriteLine("Please log in to delete meeting");
                 return;
-            }
-        
+            }        
             var meetings = Service.GetMeetings(LogedInnPerson);
             if (meetings.Count == 0)
             {
@@ -185,35 +183,44 @@ namespace InternalMeetingApp
             int selection = Static.GetInt();
             try
             {
-                var meeting = meetings[selection];
+                var meeting = meetings[--selection];
             }
             catch (Exception)
             {
                 Console.WriteLine("selection out of range");
                 return;
-            }                      
-            Service.DeleteMeeting(LogedInnPerson, meetings[selection]);
-
-            
+            }
+            if (Service.DeleteMeeting(LogedInnPerson, meetings[selection]))
+            {
+                Console.WriteLine("Meeting deleted successfully");
+                return;
+            }
+            Console.WriteLine("Only resposible person for the meeting can delete meeting");            
         }
         public void AddPersonToMeeting()
         {
             var meeting = GetMeeting();
+            if (meeting is null)
+            {
+                Console.WriteLine("Meeting not selected");
+                return;
+            }
             var person = GetPerson();
 
             Console.Clear();
-            if (person is null || meeting is null)
+            if (person is null)
             {
-                Console.WriteLine("Person or meeting not selected");
+                Console.WriteLine("Person not selected");
                 return;
             }
             if (Service.PersonExists(person, meeting))
             {
-                Console.WriteLine("Person already exists in meeting");
+                Console.WriteLine($"{person.Name} already exists in meeting");
+                return;
             }
             if (Service.AddPersonToMeeting(person, meeting))
             {
-                Console.WriteLine("Person added successfully");
+                Console.WriteLine($"{person.Name} added successfully");
                 return;
             }
             Console.WriteLine("Person not added");
@@ -223,23 +230,17 @@ namespace InternalMeetingApp
             var meeting = GetMeeting();
 
             Console.Clear();
+            if (meeting is null)
+            {
+                Console.WriteLine("Meeting not selected");
+                return;
+            }
             if (meeting.People.Count == 0)
             {
                 Console.WriteLine("No people is added to a meeting");
                 return;
             }
-
-            Console.WriteLine("Please select person: ");
-            Static.ShowItems(meeting.People);
-
-            var selection = Static.GetInt();
-            var inRange =  Validator.ValidateSelection( meeting.People,selection);
-            if (!inRange)
-            {
-                Console.WriteLine("Wrong selection");
-                return;
-            }
-            var person = meeting.People[--selection];
+            var person = GetPerson();
             try
             {
                 Service.RemovePersonFromMeeting(person, meeting);             
@@ -249,20 +250,23 @@ namespace InternalMeetingApp
                 Console.WriteLine(e.Message);
                 return;
             }
-            Console.WriteLine("Person was removed successfully");
+            Console.WriteLine($"{person.Name} was removed successfully");
         }
         public void ShowMeetings(int selection)
         {
             var meetings = new List<Meeting>();
             Console.Clear();
+
+           
+
             switch (selection)
             {
                 case 1:
                     Console.WriteLine("Enter description");
-                   meetings = Service.GetMeetings(Console.ReadLine());    
+                    meetings = Service.GetMeetings(Console.ReadLine());                    
                     break;
                 case 2:
-                    var person = GetPerson();
+                    var person = GetPerson();                   
                     meetings = Service.GetMeetings(person);
                     break;
                 case 3:
@@ -285,17 +289,18 @@ namespace InternalMeetingApp
                     Console.WriteLine("No such selection");
                     break;
             }
-            if (meetings.Count == 0)
+            if (meetings.Count == 0 || meetings is null)
             {
                 Console.WriteLine("No meetings by this filter");
+                return;
             }
             Static.ShowItems(meetings);
-
+            Console.ReadKey();
         }
         private Meeting GetMeeting()
         {
             var meetings = Service.GetMeetings();
-            if (meetings.Count == 0)
+            if (meetings.Count == 0 || meetings is null)
             {
                 Console.WriteLine("No meetings created");
                 return null;
@@ -303,7 +308,7 @@ namespace InternalMeetingApp
             Console.WriteLine("Select meeting: ");
             Static.ShowItems(meetings);
             var meetingSelection = Static.GetInt();
-            if (!Validator.ValidateSelection(meetings, meetingSelection))
+            if (!Validator.InRange(meetings, meetingSelection))
             {
                 Console.WriteLine("Wrong selection");
                 return null;
@@ -318,12 +323,11 @@ namespace InternalMeetingApp
             Static.ShowItems(people);
             var personSelection = Static.GetInt();
 
-            if (Validator.ValidateSelection(people, personSelection))
+            if (!Validator.InRange(people, personSelection))
             {
                 Console.WriteLine("Wrong selection");
                 return null;
             }
-
             return people[--personSelection];
         }
         private static Category GetCategory()
