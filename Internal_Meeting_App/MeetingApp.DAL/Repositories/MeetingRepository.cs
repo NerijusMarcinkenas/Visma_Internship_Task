@@ -9,8 +9,8 @@ namespace MeetingApp.DAL.Repositories
     {       
         private List<Meeting> Meetings { get; set; }
         private List<Person> People { get; set; }
-        private readonly string _meetingFile = "Meetings.json";
-        private readonly string _peopleFile = "People.json";
+        private readonly string _meetingFile = @"C:\Users\nerki\Documents\Visma_Internship_Task\Visma_Internship_Task\Internal_Meeting_App\MeetingApp.DAL\Meetings.json";
+        private readonly string _peopleFile = @"C:\Users\nerki\Documents\Visma_Internship_Task\Visma_Internship_Task\Internal_Meeting_App\MeetingApp.DAL\People.json";
         public MeetingRepository()
         {
             Meetings = new List<Meeting>();

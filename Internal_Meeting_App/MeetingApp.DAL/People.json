@@ -1,0 +1,44 @@
+[
+  {
+    "Id": "ed44a8a1-be8e-4649-9f20-455bb9bc308e",
+    "Name": "User",
+    "Username": "username",
+    "Password": "pass",
+    "TimeAddedToMeeting": "2022-08-13T12:21:05.9478105+03:00"
+  },
+  {
+    "Id": "00fe6393-b363-4898-b856-51e17acbc67b",
+    "Name": "Logan",
+    "Username": "logan",
+    "Password": "pass",
+    "TimeAddedToMeeting": "0001-01-01T00:00:00"
+  },
+  {
+    "Id": "705960fe-9827-4ad2-8914-cbdc93b696e0",
+    "Name": "Paul",
+    "Username": "paul",
+    "Password": "pass",
+    "TimeAddedToMeeting": "2022-08-13T11:36:49.0156624+03:00"
+  },
+  {
+    "Id": "20ba100e-f31e-4ef2-888d-810f3363b57e",
+    "Name": "Anna",
+    "Username": "anna",
+    "Password": "pass",
+    "TimeAddedToMeeting": "2022-08-13T11:45:50.5477269+03:00"
+  },
+  {
+    "Id": "7c79a457-c3aa-434a-9643-69387722f3cf",
+    "Name": "Sam",
+    "Username": "sam",
+    "Password": "pass",
+    "TimeAddedToMeeting": "0001-01-01T00:00:00"
+  },
+  {
+    "Id": "84e24f48-1039-4f37-a316-d7aebb3b149b",
+    "Name": "Test name",
+    "Username": "test",
+    "Password": "t",
+    "TimeAddedToMeeting": "2022-08-18T09:01:29.5649925+03:00"
+  }
+]
